@@ -40,6 +40,10 @@ public class PaymentMapper {
         dto.setStatus(payment.getStatus());
         dto.setGateway(payment.getGateway());
         dto.setAmount(payment.getAmount());
+        dto.setCurrency(payment.getCurrency());
+        dto.setFineId(payment.getFine()==null ? null : payment.getFine().getId());
+        dto.setCreatedAt(payment.getCreatedAt());
+        dto.setUpdatedAt(payment.getUpdatedAt());
 
         // Gateway information
         dto.setTransactionId(payment.getTransactionId());

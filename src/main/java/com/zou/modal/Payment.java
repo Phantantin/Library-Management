@@ -39,6 +39,8 @@ public class Payment {
     private PaymentGateway gateway;
 
     private Long amount;
+    private String currency;
+    @ManyToOne private Fine fine;
 
     private String transactionId;
 

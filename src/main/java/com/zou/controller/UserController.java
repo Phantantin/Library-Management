@@ -26,9 +26,9 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile() throws Exception {
+    public ResponseEntity<UserDTO> getUserProfile() throws Exception {
         return ResponseEntity.ok(
-                userService.getCurrentUser()
+                com.zou.mapper.UserMapper.toDTO(userService.getCurrentUser())
         );
     }
 }

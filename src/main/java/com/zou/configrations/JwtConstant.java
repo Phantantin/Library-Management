@@ -1,6 +1,2 @@
 package com.zou.configrations;
-
-public class JwtConstant {
-    public static final String JWT_HEADER = "Authorization";
-    public static final String SECRET_KEY = "jfhjdshfdgfdsfyetrjerjhsfdsgfegrfysdgyfdgs";
-}
+public final class JwtConstant { private JwtConstant() {} public static final String JWT_HEADER = "Authorization"; }

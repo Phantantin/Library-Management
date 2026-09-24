@@ -15,7 +15,6 @@ public class PaymentEventListener {
 
     private final SubscriptionService subscriptionService;
 
-    @Async
     @EventListener
     @Transactional
     public void handlePaymentSuccess(Payment payment) throws SubscriptionException {

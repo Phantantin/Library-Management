@@ -25,4 +25,8 @@ public interface BookService {
 
     long getTotalAvailableBooks();
 
+    List<BookDTO> getFeaturedBooks(int limit);
+
+    List<BookDTO> getPopularBooks(int limit);
+
 }

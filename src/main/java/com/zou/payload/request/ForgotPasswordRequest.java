@@ -9,5 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ForgotPasswordRequest {
 
+    @jakarta.validation.constraints.NotBlank
+    @jakarta.validation.constraints.Email
     private String email;
 }

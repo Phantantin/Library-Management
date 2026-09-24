@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
         String email = authentication.getName();
 
-        System.out.println("Current authenticated email: " + email);
+
 
         User user = userRepository.findByEmail(email);
 

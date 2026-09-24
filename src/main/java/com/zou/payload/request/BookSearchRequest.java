@@ -14,11 +14,13 @@ public class BookSearchRequest {
 
     private Long genreId;
 
-    private Boolean availableOnly;
+    private Boolean availableOnly=false;
 
-    private Integer pageSize=0;
+    private Boolean activeOnly=true;
 
-    private Integer page=20;
+    private Integer pageSize=20;
+
+    private Integer page=0;
 
     private String sortBy="createdAt";
 

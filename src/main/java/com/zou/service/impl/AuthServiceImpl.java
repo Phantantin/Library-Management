@@ -38,6 +38,8 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerUserServiceImplementation customerUserServiceImplementation;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
+    @org.springframework.beans.factory.annotation.Value("${app.frontend-url:http://localhost:3000}")
+    private String frontendUrl;
 
     @Override
     public AuthResponse login(String userName, String password) throws UserException {
@@ -67,11 +69,11 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = customerUserServiceImplementation.loadUserByUsername(userName);
 
         if(userDetails == null){
-            throw new UserException("User not found with email + " +password);
+            throw new UserException("Invalid email or password");
 
         }
         if(!passwordEncoder.matches(password, userDetails.getPassword())){
-            throw new UserException("Password not match");
+            throw new UserException("Invalid email or password");
         }
 
         return new UsernamePasswordAuthenticationToken(userName, null, userDetails.getAuthorities());
@@ -115,11 +117,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void createPasswordResetToken(String email) throws UserException {
-        String frontendUrl = "";
+
         User user = userRepository.findByEmail(email);
 
         if(user == null){
-            throw new UserException("User not found with given email");
+            return;
         }
 
         String token = UUID.randomUUID().toString();
@@ -129,7 +131,7 @@ public class AuthServiceImpl implements AuthService {
                 .expiryDate(LocalDateTime.now().plusMinutes(5))
                 .build();
         passwordResetTokenRepository.save(resetToken);
-        String resetLink = frontendUrl+token;
+        String resetLink = frontendUrl + "/reset-password?token=" + token;
         String subject = "Password Reset Request";
         String body = "You requested reset your password. Use this link (valid 5 minutes): "+ resetLink;
 

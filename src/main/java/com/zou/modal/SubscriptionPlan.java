@@ -35,6 +35,7 @@ public class SubscriptionPlan {
     @Column(nullable = false)
     private Long price;
 
+    @Builder.Default
     private String currency="INR";
 
     @Column(nullable = false)
@@ -46,10 +47,13 @@ public class SubscriptionPlan {
     private Integer maxDaysPerBook;
 
 
+    @Builder.Default
     private Integer displayOrder =0;
 
+    @Builder.Default
     private Boolean isActive= true;
 
+    @Builder.Default
     private Boolean isFeatured= false;
 
     private String  badgeText;

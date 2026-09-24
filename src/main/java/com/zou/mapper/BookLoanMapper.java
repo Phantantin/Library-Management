@@ -42,7 +42,7 @@ public class BookLoanMapper {
         dto.setRemainingDays(
                 ChronoUnit.DAYS.between(
                         LocalDate.now(),
-                        bookLoan.getCheckoutDate()
+                        bookLoan.getDueDate()
                 )
         );
 

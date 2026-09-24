@@ -34,6 +34,8 @@ public class SubscriptionImpl implements SubscriptionService {
     private final UserService userService;
     private final SubscriptionPlanRepository subscriptionPlanRepository;
     private final PaymentService paymentService;
+    private final com.zou.repository.PaymentRepository payments;
+    private final com.zou.service.AccessService access;
 
     @Override
     public PaymentInitiateResponse subscribe(SubscriptionDTO subscriptionDTO) throws Exception {
@@ -44,13 +46,14 @@ public class SubscriptionImpl implements SubscriptionService {
                         () -> new  Exception("Plan not found!")
                 );
 
+        if(!Boolean.TRUE.equals(plan.getIsActive())) throw new Exception("Plan is inactive");
         // Optional<Sub>
 
         Subscription subscription = subscriptionMapper.toEntity(subscriptionDTO, plan, user);
         subscription.initializeFromPlan();
         subscription.setIsActive(false);
         Subscription savedSubscription = subscriptionRepository.save(subscription);
-        // create payment todo
+        // Create the provider payment only after the inactive subscription is persisted.
 
         PaymentInitiateRequest paymentInitiateRequest = PaymentInitiateRequest
                 .builder()
@@ -68,8 +71,8 @@ public class SubscriptionImpl implements SubscriptionService {
 
     @Override
     public SubscriptionDTO getUsersActiveSubscriptions(Long userId) throws Exception {
-        User user = userService.getCurrentUser();
-
+        User user = userId == null ? userService.getCurrentUser() : userService.findById(userId);
+        access.ownerOrAdmin(user.getId());
         Subscription subscription =  subscriptionRepository
                 .findActiveSubscriptionByUserId(user.getId(), LocalDate.now())
                 .orElseThrow(() -> new  Exception("No active subscription found!"));
@@ -81,6 +84,7 @@ public class SubscriptionImpl implements SubscriptionService {
         Subscription subscription = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(()-> new SubscriptionException(
                         "Subscription not found with Id: " + subscriptionId));
+        access.ownerOrAdmin(subscription.getUser().getId());
         if(!subscription.getIsActive()){
             throw new SubscriptionException("Subscription is already inactive.");
         }
@@ -100,7 +104,14 @@ public class SubscriptionImpl implements SubscriptionService {
                 .orElseThrow(
                         ()->new SubscriptionException("Subscription not found by id!")
                 );
-        // verify payment
+        // Activation is permitted only for a persisted verified payment for this subscription.
+        var payment = payments.findById(paymentId).orElseThrow(() -> new SubscriptionException("Payment not found"));
+        if(payment.getStatus()!=com.zou.domain.PaymentStatus.SUCCESS || payment.getSubscription()==null
+            || !payment.getSubscription().getId().equals(subscriptionId)
+            || !payment.getUser().getId().equals(subscription.getUser().getId()))
+            throw new SubscriptionException("Verified subscription payment required");
+        if(Boolean.TRUE.equals(subscription.getIsActive()) || subscription.getCancelledAt()!=null) return subscriptionMapper.toDTO(subscription);
+        subscription.setStartDate(LocalDate.now()); subscription.calculateEndDate();
         subscription.setIsActive(true);
         subscription = subscriptionRepository.save(subscription);
         return subscriptionMapper.toDTO(subscription);
@@ -108,7 +119,7 @@ public class SubscriptionImpl implements SubscriptionService {
 
     @Override
     public List<SubscriptionDTO> getAllSubscriptions(Pageable pageable) {
-        List<Subscription> subscriptions = subscriptionRepository.findAll();
+        List<Subscription> subscriptions = subscriptionRepository.findAll(pageable).getContent();
         return subscriptionMapper.toDTOList(subscriptions);
     }
 

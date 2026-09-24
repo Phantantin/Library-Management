@@ -27,6 +27,7 @@ public class Genre {
     private Long id;
 
     @NotBlank(message = "Genre code is Mandatory")
+    @Column(unique = true)
     private String code;
 
     @NotBlank(message = "Genre name is mandatory")
@@ -36,15 +37,18 @@ public class Genre {
     private String description;
 
     @Min(value = 0, message = "display order cannot be negative")
+    @Builder.Default
     private Integer displayOrder = 0;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean active = true;
 
     @ManyToOne
     private Genre parentGenre;
 
     @OneToMany
+    @Builder.Default
     private List<Genre> subGenres = new ArrayList<Genre>();
 
 //    @OneToMany(mappedBy = "genre", cascade = CascadeType.PERSIST)

@@ -48,6 +48,7 @@ public class Subscription {
     private LocalDate endDate;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean isActive = true;
 
     private Boolean autoRenew;

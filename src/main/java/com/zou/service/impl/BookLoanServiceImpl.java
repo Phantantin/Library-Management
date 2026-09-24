@@ -32,6 +32,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@org.springframework.transaction.annotation.Transactional(rollbackFor=Exception.class)
 @Service
 @RequiredArgsConstructor
 public class BookLoanServiceImpl implements BookLoanService {
@@ -40,6 +41,8 @@ public class BookLoanServiceImpl implements BookLoanService {
     private final SubscriptionService subscriptionService;
     private final BookRepository bookRepository;
     private final BookLoanMapper bookLoanMapper;
+    private final com.zou.service.AccessService access;
+    private final com.zou.service.ReservationQueueService reservationQueue;
 
     @Override
     public BookLoanDTO checkoutBook(CheckoutRequest checkoutRequest) throws Exception {
@@ -50,15 +53,17 @@ public class BookLoanServiceImpl implements BookLoanService {
 
     @Override
     public BookLoanDTO checkoutBookForUser(Long userId, CheckoutRequest checkoutRequest) throws Exception {
+        access.ownerOrAdmin(userId);
         // 1. validate user exit
         User user = userService.findById(userId);
         // 2. validate user has active subscription
         SubscriptionDTO subscription = subscriptionService
                 .getUsersActiveSubscriptions(user.getId());
         //3.validate book exits and is available
-        Book book = bookLoanRepository.findById(checkoutRequest.getBookId())
-                .orElseThrow(()-> new BookException("Book not found with id " + checkoutRequest)).getBook();
-        
+        Book book = bookRepository.findLockedById(checkoutRequest.getBookId())
+                .orElseThrow(()-> new BookException("Book not found"));
+        if(checkoutRequest.getCheckoutDays()==null || checkoutRequest.getCheckoutDays()<1 || checkoutRequest.getCheckoutDays()>subscription.getMaxDaysPerBook()) throw new BookException("Checkout days exceed membership allowance");
+
 
         if(!book.getActive()){
             throw new BookException("Book is not active.");
@@ -95,6 +100,7 @@ public class BookLoanServiceImpl implements BookLoanService {
                 .returnCount(0)
                 .maxRenewals(2)
                 .notes(checkoutRequest.getNotes())
+                .isOverdue(false)
                 .overdueDays(0)
                 .build();
 
@@ -110,9 +116,10 @@ public class BookLoanServiceImpl implements BookLoanService {
     @Override
     public BookLoanDTO checkinBook(CheckinRequest checkinRequest) throws Exception {
         // 1. validate book loan exit
-        BookLoan bookLoan = bookLoanRepository.findById(checkinRequest.getBookLoanId())
+        BookLoan bookLoan = bookLoanRepository.findLockedById(checkinRequest.getBookLoanId())
                 .orElseThrow(()-> new Exception("Book Loan not found"));
 
+        access.ownerOrAdmin(bookLoan.getUser().getId());
         // 2.check if already returned
         if(!bookLoan.isActive()){
             throw new BookException("Book loan is not active.");
@@ -126,9 +133,10 @@ public class BookLoanServiceImpl implements BookLoanService {
         if(condition == null){
             condition = BookLoanStatus.RETURNED;
         }
+        if (!java.util.List.of(BookLoanStatus.RETURNED, BookLoanStatus.LOST, BookLoanStatus.DAMAGED).contains(condition)) throw new BookException("Invalid return condition");
         bookLoan.setStatus(condition);
 
-        // 5 fine todo
+        // Fine assessment remains a staff-controlled workflow.
         bookLoan.setOverdueDays(0);
         bookLoan.setIsOverdue(false);
         // 6.
@@ -138,8 +146,7 @@ public class BookLoanServiceImpl implements BookLoanService {
             Book book = bookLoan.getBook();
             book.setAvailableCopies(book.getAvailableCopies()+1);
             bookRepository.save(book);
-
-            // process next reservation todo
+            reservationQueue.promoteNext(book);
         }
 
         // 8
@@ -151,10 +158,14 @@ public class BookLoanServiceImpl implements BookLoanService {
     public BookLoanDTO renewCheckout(RenewalRequest renewalRequest) throws Exception {
 
         // 1. validate book loan exit
-        BookLoan bookLoan = bookLoanRepository.findById(renewalRequest.getBookLoanId())
+        BookLoan bookLoan = bookLoanRepository.findLockedById(renewalRequest.getBookLoanId())
                 .orElseThrow(()-> new Exception("Book Loan not found"));
 
 
+        access.ownerOrAdmin(bookLoan.getUser().getId());
+        var subscription = subscriptionService.getUsersActiveSubscriptions(bookLoan.getUser().getId());
+        if(renewalRequest.getExtensionDays()==null || renewalRequest.getExtensionDays()<1 || renewalRequest.getExtensionDays()>subscription.getMaxDaysPerBook()) throw new BookException("Invalid renewal duration");
+        if(bookLoan.getDueDate().isBefore(LocalDate.now())) throw new BookException("Overdue loans cannot be renewed");
         // 2 check if can be renewed
         if(!bookLoan.canRenew()){
             throw new BookException("Book cannot be renewed.");
@@ -182,7 +193,7 @@ public class BookLoanServiceImpl implements BookLoanService {
                     status, currentUser, pageable);
         }else{
             //
-            Pageable pageable = PageRequest.of(page, size, Sort.by("createAt").descending());
+            Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
             bookLoanPage = bookLoanRepository.findByUserId(currentUser.getId(), pageable);
         }
         return convertToPageResponse(bookLoanPage);
@@ -248,6 +259,7 @@ public class BookLoanServiceImpl implements BookLoanService {
                         LocalDate.now()
                 );
 
+                bookLoan.setOverdueDays(overdueDays);
                 // calculate fine
                // BigDecimal fine = fineCalculationService.calculateOverdueFine(bookLoan);
                 bookLoanRepository.save(bookLoan);

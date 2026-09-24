@@ -31,6 +31,7 @@ public class BookLoan {
     @ManyToOne
     private Book book;
 
+    @Enumerated(EnumType.STRING)
     private BookLoanType type;
 
     @Enumerated(EnumType.STRING)
@@ -45,20 +46,24 @@ public class BookLoan {
     private LocalDate returnDate;
 
     @Column(nullable = false)
+    @Builder.Default
     private Integer returnCount=0;
 
     @Column(nullable = false)
+    @Builder.Default
     private Integer maxRenewals=2;
 
-    //fine todo
+    // Fine records reference this loan through the separate Fine entity.
 
     @Column(length = 500)
     private String notes;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean isOverdue=false;
 
     @Column(nullable = false)
+    @Builder.Default
     private Integer overdueDays =0;
 
     @CreationTimestamp

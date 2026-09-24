@@ -38,15 +38,13 @@ public class SubscriptionController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<?> getAllSubscriptions(){
-        int page = 0;
-        int size = 10;
+    public ResponseEntity<?> getAllSubscriptions(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue="20") int size){
         Pageable pageable = PageRequest.of(page, size);
         List<SubscriptionDTO> dtoList = subscriptionService.getAllSubscriptions(pageable);
         return ResponseEntity.ok(dtoList);
     }
 
-    @GetMapping("/admin/deactivate-expired")
+    @PostMapping("/admin/deactivate-expired")
     public ResponseEntity<?> deactivateExpiredSubscriptions() throws Exception {
         int page = 0;
         int size = 10;
@@ -54,6 +52,12 @@ public class SubscriptionController {
         subscriptionService.deactivateExpiredSubscriptions();
         ApiResponse res = new ApiResponse("Task done!", true);
         return ResponseEntity.ok(res);
+    }
+
+    @Deprecated
+    @GetMapping("/admin/deactivate-expired")
+    public ResponseEntity<?> deactivateExpiredSubscriptionsLegacy() throws Exception {
+        return deactivateExpiredSubscriptions();
     }
 
     @PostMapping("/cancel/{subscriptionId}")
