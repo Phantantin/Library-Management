@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/fines", "/api/fines/waive").hasRole("ADMIN")
                 .requestMatchers("/api/subscriptions/activate").hasRole("ADMIN")
                 .requestMatchers("/api/**").authenticated()
-                .requestMatchers("/auth/**", "/", "/error").permitAll().anyRequest().denyAll())
+                .requestMatchers("/auth/**", "/", "/health", "/error").permitAll().anyRequest().denyAll())
             .addFilterBefore(new JwtValidator(jwtProvider, users), BasicAuthenticationFilter.class)
             .exceptionHandling(e -> e
                 .authenticationEntryPoint((q,r,x) -> r.sendError(401, "Please sign in"))

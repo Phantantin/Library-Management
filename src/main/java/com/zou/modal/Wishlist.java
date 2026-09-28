@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Wishlist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

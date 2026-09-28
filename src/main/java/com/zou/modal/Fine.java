@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Fine {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
