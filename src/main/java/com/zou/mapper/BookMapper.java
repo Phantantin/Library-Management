@@ -26,7 +26,8 @@ public class BookMapper {
                 .author(book.getAuthor())
                 .price(book.getPrice())
                 .isbn(book.getIsbn())
-                .genreId(book.getId())
+                .genreId(book.getGenre().getId())
+                .coverImageUrl(book.getCoverImageUrl())
                 .genreName(book.getGenre().getName())
                 .genreCode(book.getGenre().getCode())
                 .publisher(book.getPublisher())
@@ -37,6 +38,7 @@ public class BookMapper {
                 .totalCopies(book.getTotalCopies())
                 .availableCopies(book.getAvailableCopies())
                 .active(book.getActive())
+                .featured(book.getFeatured())
                 .createdAt(book.getCreatedAt())
                 .updatedAt(book.getUpdatedAt())
                 .build();
@@ -48,7 +50,7 @@ public class BookMapper {
         }
 
         Book book = new Book();
-        book.setId(dto.getId());
+
         book.setTitle(dto.getTitle());
         book.setAuthor(dto.getAuthor());
         book.setIsbn(dto.getIsbn());
@@ -75,9 +77,10 @@ public class BookMapper {
 
         // Xử lý Active: Nếu dto có giá trị thì dùng, không thì mặc định true
         book.setActive(dto.getActive() != null ? dto.getActive() : true);
+        book.setFeatured(dto.getFeatured() != null ? dto.getFeatured() : false);
 
-        book.setCreatedAt(dto.getCreatedAt());
-        book.setUpdatedAt(dto.getUpdatedAt());
+
+
 
         return book;
     }
@@ -87,6 +90,7 @@ public class BookMapper {
         if(dto == null||book == null) {
             return;
         }
+        book.setPrice(dto.getPrice());
         // ISBN should not be update
         book.setTitle(dto.getTitle());
         book.setAuthor(dto.getAuthor());
@@ -106,14 +110,15 @@ public class BookMapper {
         book.setDescription(dto.getDescription());
         book.setTotalCopies(dto.getTotalCopies());
         book.setAvailableCopies(dto.getAvailableCopies());
-        book.setActive(dto.getActive());
-        book.setCreatedAt(dto.getCreatedAt());
-        book.setUpdatedAt(dto.getUpdatedAt());
+        book.setActive(dto.getActive() == null ? book.getActive() : dto.getActive());
+
+
         book.setCoverImageUrl(dto.getCoverImageUrl());
 
         if(dto.getActive()!=null) {
-            book.setActive(dto.getActive());
+            book.setActive(dto.getActive() == null ? book.getActive() : dto.getActive());
         }
+        if(dto.getFeatured()!=null) book.setFeatured(dto.getFeatured());
     }
 
 

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -27,6 +27,8 @@ public class Reservation {
     @ManyToOne
     private Book book;
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
     private ReservationStatus status= ReservationStatus.PENDING;
 
     private LocalDateTime reservedAt;

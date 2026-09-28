@@ -49,7 +49,7 @@ public class GenreMapper {
 
         return dto;
     }
-    
+
 //    public GenreDTO toGenreDTO(Genre savedGenre) {
 //        if (savedGenre == null) {
 //            return null;
@@ -91,7 +91,7 @@ public class GenreMapper {
                  .name(genreDTO.getName())
                  .description(genreDTO.getDescription())
                  .displayOrder(genreDTO.getDisplayOrder())
-                 .active(genreDTO.getActive())
+                 .active(genreDTO.getActive()==null ? true : genreDTO.getActive())
                  .build();
 
          if (genreDTO.getParentGenreId() != null) {

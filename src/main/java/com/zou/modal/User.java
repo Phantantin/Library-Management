@@ -22,25 +22,31 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @jakarta.persistence.Column(nullable = false, unique = true)
     private String email;
 
     private String fullName;
 
+    @jakarta.persistence.Enumerated(jakarta.persistence.EnumType.STRING)
     private UserRole role;
 
     private String phone;
 
     private String userName;
 
+    @jakarta.persistence.Enumerated(jakarta.persistence.EnumType.STRING)
+    @Builder.Default
     private AuthProvider authProvider=AuthProvider.LOCAL;
 
     private String googleId;
 
     private String profileImage;
 
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+    @jakarta.persistence.Column(nullable = false)
     private String password;
 
     private LocalDateTime lastLogin;

@@ -23,6 +23,7 @@ public class GenreDTO {
 
     private String description;
 
+    @Builder.Default
     private Integer displayOrder = 0;
 
     private Boolean active;

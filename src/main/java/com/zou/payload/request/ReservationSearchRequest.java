@@ -21,10 +21,10 @@ public class ReservationSearchRequest {
 
     private Boolean activeOnly;
 
-    private int page =0;
+    @Builder.Default private int page =0;
 
-    private int size=20;
+    @Builder.Default private int size=20;
 
-    private String sortBy = "reservedAt";
-    private String sortDirection = "DESC";
+    @Builder.Default private String sortBy = "reservedAt";
+    @Builder.Default private String sortDirection = "DESC";
 }

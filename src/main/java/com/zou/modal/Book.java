@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String isbn;
 
     @Column(nullable = false)
@@ -57,7 +57,11 @@ public class Book {
     private String coverImageUrl;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean active=true;
+
+    @Builder.Default
+    private Boolean featured=false;
 
     @CreationTimestamp
     @Column(nullable = false)

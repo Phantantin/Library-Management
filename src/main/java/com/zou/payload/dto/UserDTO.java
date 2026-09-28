@@ -20,10 +20,11 @@ public class UserDTO {
 
     private Long id;
 
-    @NotNull(message = "email is required")
+    @jakarta.validation.constraints.Email
+    @jakarta.validation.constraints.NotBlank
     private String email;
 
-    @NotNull(message = "fullName is required")
+    @jakarta.validation.constraints.NotBlank
     @JsonProperty("fullName")
     private String fullName;
 
@@ -33,7 +34,9 @@ public class UserDTO {
 
     private String phone;
 
-    @NotNull(message = "password is required")
+    @jakarta.validation.constraints.NotBlank
+    @jakarta.validation.constraints.Size(min=8, max=72)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private LocalDateTime lastLogin;

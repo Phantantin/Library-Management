@@ -46,13 +46,16 @@ public class BookController {
     public ResponseEntity<BookDTO> getBookById(@PathVariable Long id)
             throws BookException {
         BookDTO book =  bookService.getBookBy(id);
+        if (!Boolean.TRUE.equals(book.getActive())) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
+        }
         return ResponseEntity.ok(book);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDTO> updateBook(
             @PathVariable Long id,
-            @RequestBody BookDTO bookDTO) throws BookException {
+            @Valid @RequestBody BookDTO bookDTO) throws BookException {
             BookDTO updateBook = bookService.updateBook(id, bookDTO);
             return ResponseEntity.ok(updateBook);
     }
@@ -87,7 +90,6 @@ public class BookController {
     public ResponseEntity<PageResponse<BookDTO>> getBooks(
             @RequestParam(required = false) Long genreId,
             @RequestParam(required = false, defaultValue = "false") Boolean availableOnly,
-            @RequestParam(defaultValue = "true") boolean activeOnly,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
@@ -97,6 +99,7 @@ public class BookController {
         BookSearchRequest bookSearchRequest = new BookSearchRequest();
         bookSearchRequest.setGenreId(genreId);
         bookSearchRequest.setAvailableOnly(availableOnly);
+        bookSearchRequest.setActiveOnly(true);
         bookSearchRequest.setPage(page);
         bookSearchRequest.setPageSize(size);
         bookSearchRequest.setSortBy(sortBy);
@@ -109,6 +112,7 @@ public class BookController {
     @PostMapping("/search")
     public ResponseEntity<PageResponse<BookDTO>> advancedSearch(
             @RequestBody BookSearchRequest bookSearchRequest){
+        bookSearchRequest.setActiveOnly(true);
         PageResponse<BookDTO> books = bookService.searchBooksWithFilters(bookSearchRequest);
         return ResponseEntity.ok(books);
     }
@@ -120,6 +124,16 @@ public class BookController {
 
         BookStatsResponse stats = new BookStatsResponse(totalActive, totalAvailable);
         return ResponseEntity.ok(stats);
+    }
+
+    @GetMapping("/featured")
+    public ResponseEntity<List<BookDTO>> featured(@RequestParam(defaultValue = "6") int limit) {
+        return ResponseEntity.ok(bookService.getFeaturedBooks(limit));
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<BookDTO>> popular(@RequestParam(defaultValue = "6") int limit) {
+        return ResponseEntity.ok(bookService.getPopularBooks(limit));
     }
 
     /*

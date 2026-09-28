@@ -86,6 +86,8 @@ import java.util.List;
 public interface ReservationRepository
         extends JpaRepository<Reservation, Long> {
 
+    List<Reservation> findByBookIdAndStatusOrderByReservedAtAsc(Long bookId, ReservationStatus status);
+
     /**
      * Check if user already has an active reservation for a book
      */

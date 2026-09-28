@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signupHandler(
-            @RequestBody UserDTO req) throws UserException {
+            @Valid @RequestBody UserDTO req) throws UserException {
         AuthResponse res = authService.signup(req);
         return ResponseEntity.ok(res);
     }
@@ -37,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiResponse> forgotPassword(
-            @RequestBody ForgotPasswordRequest request
+            @Valid @RequestBody ForgotPasswordRequest request
     ) throws UserException {
         authService.createPasswordResetToken(request.getEmail());
 
@@ -49,7 +49,7 @@ public class AuthController {
 
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse> resetPassword(
-            @RequestBody ResetPasswordRequest request
+            @Valid @RequestBody ResetPasswordRequest request
     ) throws Exception {
         authService.resetPassword(request.getToken(), request.getPassword());
         ApiResponse res = new ApiResponse(

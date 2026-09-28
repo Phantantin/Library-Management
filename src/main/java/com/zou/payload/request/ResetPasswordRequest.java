@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResetPasswordRequest {
 
+    @jakarta.validation.constraints.NotBlank
     private String token;
+    @jakarta.validation.constraints.NotBlank
+    @jakarta.validation.constraints.Size(min=8,max=72)
     private String password;
 }

@@ -41,6 +41,8 @@ public class PaymentDTO {
     @NotNull(message = "Amount is mandatory")
     @Positive(message = "Amount must be positive")
     private Long amount;
+    private String currency;
+    private Long fineId;
 
     private String transactionId;
 

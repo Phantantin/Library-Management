@@ -77,7 +77,7 @@ public class BookLoanController {
         return ResponseEntity.ok(bookLoans);
     }
 
-    @PostMapping("/admin/udpate-overdue")
+    @PostMapping({"/admin/update-overdue", "/admin/udpate-overdue"})
     public ResponseEntity<?> updateOverdueBookLoans() throws Exception {
         int updateCount = bookLoanService.updateOverdueBookLoan();
         return ResponseEntity.ok(

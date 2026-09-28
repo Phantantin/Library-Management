@@ -16,6 +16,9 @@ public class FineMapper {
         FineDTO dto = new FineDTO();
 
         dto.setId(fine.getId());
+        boolean settled = fine.getStatus()==com.zou.domain.FineStatus.PAID || fine.getStatus()==com.zou.domain.FineStatus.WAIVED;
+        dto.setAmountOutstanding(settled ? 0L : fine.getAmount());
+        dto.setAmountPaid(fine.getStatus()==com.zou.domain.FineStatus.PAID ? fine.getAmount() : 0L);
 
         // Book loan information
         if (fine.getBookLoan() != null) {

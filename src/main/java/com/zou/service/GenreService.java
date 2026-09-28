@@ -31,4 +31,6 @@ public interface GenreService {
 
     long getBookCountByGenre(Long genreId);
 
+    List<GenreDTO> getPopularGenres(int limit);
+
 }

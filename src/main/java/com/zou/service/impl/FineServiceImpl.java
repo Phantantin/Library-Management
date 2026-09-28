@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,12 +33,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class FineServiceImpl implements FineService {
     private final BookLoanRepository bookLoanRepository;
     private final FineRepository fineRepository;
     private final FineMapper fineMapper;
     private final PaymentService paymentService;
     private final UserService userService;
+    private final com.zou.service.AccessService access;
 
     @Override
     public FineDTO createFine(CreateFineRequest createFineRequest) throws Exception {
@@ -70,6 +73,7 @@ public class FineServiceImpl implements FineService {
         Fine fine = fineRepository.findById(fineId)
                 .orElseThrow(() -> new Exception("Fine doesn't exist"));
 
+        access.ownerOrAdmin(fine.getUser().getId());
         // 2. check already paid
         if (fine.getStatus().equals(FineStatus.PAID)) {
             throw new Exception("fine already paid");
@@ -80,11 +84,9 @@ public class FineServiceImpl implements FineService {
         }
 
         // 3. initiate payment
-        User user = userService.getCurrentUser();
-
         PaymentInitiateRequest request = PaymentInitiateRequest
                 .builder()
-                .userId(user.getId())
+                .userId(fine.getUser().getId())
                 .fineId(fine.getId())
                 .paymentType(PaymentType.FINE)
                 .gateway(PaymentGateway.RAZORPAY)

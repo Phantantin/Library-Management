@@ -21,12 +21,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class BookReviewServiceImpl implements BookReviewService {
     private final BookReviewRepository bookReviewRepository;
     private final UserService userService;
@@ -103,12 +105,12 @@ public class BookReviewServiceImpl implements BookReviewService {
                 ));
 
         // 2. Check if current user is the owner of the review
-        if (!bookReview.getUser().getId().equals(currentUser.getId())) {
+        if (!bookReview.getUser().getId().equals(currentUser.getId()) && currentUser.getRole()!=com.zou.domain.UserRole.ROLE_ADMIN) {
             throw new Exception("You can only delete your own reviews");
         }
 
 
-        bookReviewRepository.save(bookReview);
+        bookReviewRepository.delete(bookReview);
 
     }
 

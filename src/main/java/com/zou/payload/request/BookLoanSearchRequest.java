@@ -21,8 +21,8 @@ public class BookLoanSearchRequest {
     private Boolean unpaidFinesOnly;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Integer page=0;
-    private Integer size=20;
-    private String sortBy="createdAt";
-    private String sortDirection="DESC";
+    @Builder.Default private Integer page=0;
+    @Builder.Default private Integer size=20;
+    @Builder.Default private String sortBy="createdAt";
+    @Builder.Default private String sortDirection="DESC";
 }

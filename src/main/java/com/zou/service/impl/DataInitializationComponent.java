@@ -1,39 +1,22 @@
 package com.zou.service.impl;
-
-
 import com.zou.domain.UserRole;
 import com.zou.modal.User;
 import com.zou.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-@Component
-@RequiredArgsConstructor
+@Component @RequiredArgsConstructor
 public class DataInitializationComponent implements CommandLineRunner {
-
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public void run(String... args){
-        initializeAdminUser();
-    }
-
-    private void initializeAdminUser(){
-        String adminEmail ="tantincva@gmail.com";
-        String adminPassword = "tantin12345";
-
-        if(userRepository.findByEmail(adminEmail)==null){
-            User user = new User().builder()
-                    .password(passwordEncoder.encode(adminPassword))
-                    .email(adminEmail)
-                    .fullName("Code with Zou")
-                    .role(UserRole.ROLE_ADMIN)
-                    .build();
-
-            User admin = userRepository.save(user);
+    private final UserRepository users;
+    private final PasswordEncoder encoder;
+    @Value("${app.bootstrap.email:}") private String email;
+    @Value("${app.bootstrap.password:}") private String password;
+    @Override public void run(String... args) {
+        if (!email.isBlank() && password.length()>=12 && users.findByEmail(email)==null) {
+            User user = new User(); user.setEmail(email); user.setFullName("Library administrator");
+            user.setRole(UserRole.ROLE_ADMIN); user.setPassword(encoder.encode(password)); users.save(user);
         }
     }
 }

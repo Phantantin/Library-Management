@@ -47,6 +47,7 @@ public class SubscriptionPlanMapper {
         plan.setDescription(dto.getDescription());
         plan.setDurationDays(dto.getDurationDays());
         plan.setPrice(dto.getPrice());
+        if(dto.getCurrency()!=null) plan.setCurrency(dto.getCurrency());
         plan.setMaxBooksAllowed(dto.getMaxBooksAllowed());
         plan.setMaxDaysPerBook(dto.getMaxDaysPerBook());
         plan.setDisplayOrder(dto.getDisplayOrder() !=null ? dto.getDisplayOrder() : 0);
@@ -87,6 +88,7 @@ public class SubscriptionPlanMapper {
 
         if (dto.getPrice() != null) {
             plan.setPrice(dto.getPrice());
+        if(dto.getCurrency()!=null) plan.setCurrency(dto.getCurrency());
         }
 
         if (dto.getCurrency() != null) {

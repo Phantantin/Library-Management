@@ -18,12 +18,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Set;
 
+@org.springframework.transaction.annotation.Transactional(rollbackFor=Exception.class)
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final com.zou.repository.BookLoanRepository bookLoanRepository;
 
     @Override
     public BookDTO createBook(BookDTO bookDTO) throws BookException {
@@ -34,7 +37,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.toEntity(bookDTO);
         // total - 10
         // available -11
-        book.isVailableCopesValid();
+        if(!book.isVailableCopesValid()) throw new BookException("Available copies cannot exceed total copies");
         Book savedBook = bookRepository.save(book);
 
         return bookMapper.toDTO(savedBook);
@@ -73,7 +76,7 @@ public class BookServiceImpl implements BookService {
                 ()-> new BookException("Book not found!")
         );
         bookMapper.updateEntityFromDto(bookDTO, existingBook);
-        existingBook.isVailableCopesValid();
+        if(!existingBook.isVailableCopesValid()) throw new BookException("Available copies cannot exceed total copies");
         Book savedBook = bookRepository.save(existingBook);
         return bookMapper.toDTO(savedBook);
     }
@@ -107,7 +110,8 @@ public class BookServiceImpl implements BookService {
         Page<Book> bookPage = bookRepository.seachBookWithFilters(
                 searchRequest.getSearchTerm(),
                 searchRequest.getGenreId(),
-                searchRequest.getAvailableOnly(),
+                Boolean.TRUE.equals(searchRequest.getAvailableOnly()),
+                Boolean.TRUE.equals(searchRequest.getActiveOnly()),
                 pageable
         );
 
@@ -125,11 +129,32 @@ public class BookServiceImpl implements BookService {
         return bookRepository.countAvailableBooks();
     }
 
+    @Override
+    public List<BookDTO> getFeaturedBooks(int limit) {
+        return bookRepository.findByActiveTrueAndFeaturedTrue(PageRequest.of(0, Math.max(1, Math.min(limit, 12)), Sort.by("createdAt").descending()))
+                .stream().map(bookMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<BookDTO> getPopularBooks(int limit) {
+        return bookLoanRepository.findPopularBooks(PageRequest.of(0, Math.max(1, Math.min(limit, 12))))
+                .stream().map(bookMapper::toDTO).toList();
+    }
+
     private Pageable createPageable(int page, int size, String sortBy, String sortDirection) {
-        size = Math.min(size, 10);
+        page = Math.max(page, 0);
+        size = Math.min(size, 100);
         size = Math.max(size, 1);
 
-        Sort sort = sortDirection.equalsIgnoreCase("ASC")
+        if ("publicationDate".equals(sortBy)) {
+            sortBy = "publicsheDate";
+        }
+        Set<String> allowedSorts = Set.of("createdAt", "updatedAt", "title", "author", "publicsheDate", "availableCopies", "price");
+        if (!allowedSorts.contains(sortBy)) {
+            sortBy = "createdAt";
+        }
+
+        Sort sort = "ASC".equalsIgnoreCase(sortDirection)
                 ?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
         return PageRequest.of(page, size, sort);
     }

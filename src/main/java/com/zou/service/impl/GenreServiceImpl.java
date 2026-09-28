@@ -7,18 +7,20 @@ import com.zou.payload.dto.GenreDTO;
 import com.zou.repository.GenreRepository;
 import com.zou.service.GenreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
     private final GenreMapper genreMapper;
+    private final com.zou.repository.BookRepository books;
 
     @Override
     public GenreDTO createGenre(GenreDTO genreDTO) {
@@ -88,7 +90,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public List<GenreDTO> getTopLevelGenre() {
         List<Genre> topLevelGenres= genreRepository
-                .findByActiveTrueOrderByDisplayOrderAsc();
+                .findByParentGenreIsNullAndActiveTrueOrderByDisplayOrderAsc();
         return genreMapper.toDTOList(topLevelGenres);
     }
 
@@ -99,6 +101,16 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public long getBookCountByGenre(Long genreId) {
-        return 0;
+        return books.countByGenreIdAndActiveTrue(genreId);
+    }
+
+    @Override
+    public List<GenreDTO> getPopularGenres(int limit) {
+        return genreRepository.findPopular(org.springframework.data.domain.PageRequest.of(0, Math.max(1, Math.min(limit, 12))))
+                .stream().map(genre -> {
+                    GenreDTO dto = genreMapper.toGenreDTO(genre);
+                    dto.setBookCount(books.countByGenreIdAndActiveTrue(genre.getId()));
+                    return dto;
+                }).toList();
     }
 }

@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: library-management-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: SERVER_PORT
+        value: 5000
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_MAX_POOL_SIZE
+        value: 5
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REQUIRE_CONFIGURED_SECRET
+        value: true
+      - key: FLYWAY_ENABLED
+        value: true
+      - key: FLYWAY_BASELINE_ON_MIGRATE
+        value: true
+      - key: DDL_AUTO
+        value: validate
+      - key: FRONTEND_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: PAYMENT_CURRENCY
+        value: VND
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SPRING_MAIL_USERNAME
+        sync: false
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false

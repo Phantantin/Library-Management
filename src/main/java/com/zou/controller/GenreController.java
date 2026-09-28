@@ -26,7 +26,7 @@ public class GenreController {
 
     @GetMapping
     public ResponseEntity<?> getAllGenre() {
-        List<GenreDTO> genres = genreService.getAllGenres();
+        List<GenreDTO> genres = genreService.getAllActiveGenresWithSubGenre();
         return ResponseEntity.ok(genres);
     }
 
@@ -73,6 +73,11 @@ public class GenreController {
     public ResponseEntity<?> getTotalActiveGenres() {
         Long genres = genreService.getTotalActiveGenres();
         return ResponseEntity.ok(genres);
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<GenreDTO>> popular(@RequestParam(defaultValue = "6") int limit) {
+        return ResponseEntity.ok(genreService.getPopularGenres(limit));
     }
 
     @GetMapping("/{id}/book-count")

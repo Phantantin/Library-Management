@@ -25,4 +25,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
             "AND s.endDate<:today")
     List<Subscription> findExpireActiveSubscriptions(
             @Param("today")LocalDate today);
+org.springframework.data.domain.Page<Subscription> findByUserId(Long id,org.springframework.data.domain.Pageable page);
+@Query("select count(s) from Subscription s where s.isActive=true and s.startDate<=:today and s.endDate>=:today")
+long countValid(@Param("today") LocalDate today);
 }

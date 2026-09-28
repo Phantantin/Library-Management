@@ -11,4 +11,5 @@ public interface BookReviewRepository extends JpaRepository<BookReview, Long> {
     Page<BookReview> findByBook(Book book, Pageable pageable);
 
     boolean existsByUserIdAndBookId(Long userId, Long bookId);
+org.springframework.data.domain.Page<BookReview> findByUserId(Long id,org.springframework.data.domain.Pageable page);
 }

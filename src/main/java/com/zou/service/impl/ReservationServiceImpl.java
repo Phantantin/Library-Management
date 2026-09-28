@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@org.springframework.transaction.annotation.Transactional(rollbackFor=Exception.class)
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
@@ -39,6 +40,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
     private final BookLoanService bookLoanService;
+    private final com.zou.service.AccessService access;
+    private final com.zou.service.ReservationQueueService reservationQueue;
     int MAX_RESERVATIONS = 5;
 
     @Override
@@ -61,7 +64,8 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         // 1. validate user exist
-        User user = userService.getCurrentUser();
+        access.ownerOrAdmin(userId);
+        User user = userService.findById(userId);
 
         // 2. validate book exist
         Book book = bookRepository
@@ -73,13 +77,14 @@ public class ReservationServiceImpl implements ReservationService {
             throw new Exception("You have already reservation on this book");
         }
         // 4 check if book
+        if(!Boolean.TRUE.equals(book.getActive())) throw new Exception("Book is inactive");
         if(book.getAvailableCopies()>0){
             throw new Exception("book has already been reserved");
         }
         //5 check user's active reservation limit
         long activeReservations = reservationRepository
                 .countActiveReservationsByUser(userId);
-        if(activeReservations>MAX_RESERVATIONS){
+        if(activeReservations>=MAX_RESERVATIONS){
             throw new Exception("you have reservation " + MAX_RESERVATIONS+ " times");
         }
         //6 create reservation
@@ -127,6 +132,7 @@ public class ReservationServiceImpl implements ReservationService {
             );
         }
 
+        boolean wasAvailable = reservation.getStatus() == ReservationStatus.AVAILABLE;
         reservation.setStatus(ReservationStatus.CANCELLED);
         reservation.setCancelledAt(LocalDateTime.now());
 
@@ -134,9 +140,8 @@ public class ReservationServiceImpl implements ReservationService {
                 reservationRepository.save(reservation);
 
         // Update queue positions for remaining reservations
-//        updateQueuePositions(
-//                reservation.getBook().getId()
-//        );
+        reservationQueue.resequence(reservation.getBook().getId());
+        if (wasAvailable) reservationQueue.promoteNext(reservation.getBook());
 
 
         return reservationMapper.toDTO(savedReservation);
@@ -149,6 +154,7 @@ public class ReservationServiceImpl implements ReservationService {
                         "Reservation not found with ID: " + reservationId
                 ));
 
+        if (!reservation.canBeCancelled() || reservation.hasExpired()) throw new Exception("Reservation is not active");
         if (reservation.getBook().getAvailableCopies() <= 0) {
             throw new Exception(
                     "Reservation is not available for pickup (current status: "
@@ -171,6 +177,7 @@ public class ReservationServiceImpl implements ReservationService {
                 reservation.getUser().getId(),
                 request
         );
+        reservationQueue.resequence(reservation.getBook().getId());
 
         return reservationMapper.toDTO(savedReservation);
     }
@@ -220,6 +227,8 @@ public class ReservationServiceImpl implements ReservationService {
         response.setTotalElements(reservationPage.getTotalElements());
         response.setTotalPages(reservationPage.getTotalPages());
         response.setLast(reservationPage.isLast());
+        response.setFirst(reservationPage.isFirst());
+        response.setEmpty(reservationPage.isEmpty());
 
         return response;
     }

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Fine {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -28,11 +28,13 @@ public class Fine {
     @ManyToOne
     private BookLoan bookLoan;
 
+    @Enumerated(EnumType.STRING)
     private FineType type;
 
     @Column(nullable = false)
     private Long amount;
 
+    @Enumerated(EnumType.STRING)
     private FineStatus status;
 
     @Column(length = 500)
@@ -65,7 +67,7 @@ public class Fine {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 

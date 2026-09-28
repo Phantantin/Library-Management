@@ -72,6 +72,8 @@ public class BookDTO {
 
     private Boolean active;
 
+    private Boolean featured;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
