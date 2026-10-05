@@ -4,15 +4,20 @@ import com.zou.modal.Payment;
 import com.zou.modal.User;
 import com.zou.payload.response.PaymentLinkResponse;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 @Service
 public class RazorpayService {
     @Value("${razorpay.key.id:}") private String keyId;
     @Value("${razorpay.key.secret:}") private String keySecret;
     @Value("${app.frontend-url:http://localhost:3000}") private String frontend;
     private RazorpayClient client() throws Exception {
-        if(keyId.isBlank() || keySecret.isBlank()) throw new IllegalStateException("Payment gateway is not configured");
+        if(keyId.isBlank() || keySecret.isBlank()) throw new ResponseStatusException(
+            HttpStatus.SERVICE_UNAVAILABLE,
+            "Online payment is not configured. Please contact the library administrator."
+        );
         return new RazorpayClient(keyId.trim(),keySecret.trim());
     }
     public PaymentLinkResponse createPaymentLink(User user, Payment payment) throws Exception {

@@ -7,4 +7,5 @@
 - Reset email missing: check SMTP credentials and `FRONTEND_URL`; the API intentionally does not reveal whether an email exists.
 - Payment remains processing: verify sandbox credentials, supported currency, smallest-unit amount, returned payment ID and Payment Link contents. Client redirect alone never completes a payment.
 - Checkout rejected: confirm active subscription, plan limits, no overdue loans, available active book and requested days within the plan.
+- Membership subscription fails before opening Razorpay: set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in the Render backend service, then redeploy. Use test credentials for sandbox testing; never put them in Vercel or Git. Confirm `FRONTEND_URL` is the deployed frontend URL for the payment return page.
 - Build fails after moving folders: run npm commands from sibling `frontend`, Maven commands from `Library-Management`.

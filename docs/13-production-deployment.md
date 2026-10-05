@@ -70,7 +70,7 @@ Required environment variables:
 | `PAYMENT_CURRENCY` | `VND` |
 | `ADMIN_EMAIL` | Optional bootstrap admin email |
 | `ADMIN_PASSWORD` | Optional bootstrap password, at least 12 characters |
-| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | Optional until payment is tested |
+| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | Required in Render before members can subscribe to paid plans or pay fines. Use Razorpay test keys for sandbox testing; keep both values only in Render secrets. |
 | `SPRING_MAIL_USERNAME` / `SPRING_MAIL_PASSWORD` | Optional until reset email is tested |
 | `SPRING_MAIL_PORT` | Provider port; Render Free blocks 25/465/587 |
 
@@ -112,7 +112,7 @@ Do not add a trailing slash. Redeploy Render. Preview deployments have changing 
 4. Sign in with the bootstrap admin, create a genre and upload/create a book.
 5. Verify search, book details and the uploaded cover.
 6. Test checkout only after creating/activating an appropriate subscription.
-7. Test Razorpay only with sandbox credentials and confirm the backend verification result.
+7. Add `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` to Render, use sandbox credentials first, and confirm the backend verification result. Without these keys, paid membership signup and fine payment return HTTP 503 and remain unavailable.
 8. Test forgot-password only after configuring an email route available from Render.
 
 ## 7. Free-tier behavior
