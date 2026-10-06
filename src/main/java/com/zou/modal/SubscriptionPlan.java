@@ -36,7 +36,7 @@ public class SubscriptionPlan {
     private Long price;
 
     @Builder.Default
-    private String currency="INR";
+    private String currency="VND";
 
     @Column(nullable = false)
     @Positive(message = "Max books must be positive")

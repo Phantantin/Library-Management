@@ -2,6 +2,7 @@ package com.zou.controller;
 
 import com.zou.exception.SubscriptionException;
 import com.zou.payload.dto.SubscriptionDTO;
+import com.zou.payload.request.SubscriptionPurchaseRequest;
 import com.zou.payload.response.ApiResponse;
 import com.zou.payload.response.PaymentInitiateResponse;
 import com.zou.service.SubscriptionService;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -23,9 +25,10 @@ public class SubscriptionController {
 
     @PostMapping("/subscribe")
     public ResponseEntity<?> subscribeToSubscription(
-            @RequestBody SubscriptionDTO subscription
+            @Valid @RequestBody SubscriptionPurchaseRequest purchase,
+            HttpServletRequest request
     ) throws Exception{
-      PaymentInitiateResponse dto = subscriptionService.subscribe(subscription);
+      PaymentInitiateResponse dto = subscriptionService.subscribe(purchase, request.getRemoteAddr());
       return ResponseEntity.ok(dto);
     }
 

@@ -67,7 +67,7 @@ public class FineServiceImpl implements FineService {
     }
 
     @Override
-    public PaymentInitiateResponse payFine(Long fineId, String transactionId) throws Exception {
+    public PaymentInitiateResponse payFine(Long fineId, String paymentMethod, String clientIp) throws Exception {
 
         // 1. validate fine exist
         Fine fine = fineRepository.findById(fineId)
@@ -89,9 +89,11 @@ public class FineServiceImpl implements FineService {
                 .userId(fine.getUser().getId())
                 .fineId(fine.getId())
                 .paymentType(PaymentType.FINE)
-                .gateway(PaymentGateway.RAZORPAY)
+                .gateway(PaymentGateway.VNPAY)
                 .amount(fine.getAmount())
                 .description("library fine payment")
+                .paymentMethod(paymentMethod)
+                .ipAddress(clientIp)
                 .build();
 
         return paymentService.initiatePayment(request);

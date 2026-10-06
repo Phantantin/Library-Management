@@ -86,4 +86,14 @@ class AuthControllerIntegrationTest {
                 .andExpect(jsonPath("$.status").value(false))
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
+
+    @Test
+    void vnpayIpnIsPublicAndRejectsAnInvalidSignatureUsingProviderResponseShape() throws Exception {
+        mockMvc.perform(get("/api/payments/vnpay/ipn")
+                        .param("vnp_TxnRef", "123")
+                        .param("vnp_SecureHash", "invalid"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.RspCode").value("97"))
+                .andExpect(jsonPath("$.Message").value("Invalid signature"));
+    }
 }

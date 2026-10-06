@@ -17,7 +17,7 @@ public class PaymentInitiateResponse {
 
     private String transactionId;
 
-    private String razorpayOrderId;
+    private String gatewayOrderId;
 
     private Long amount;
 

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,9 +37,10 @@ public class FineController {
     @PostMapping("/{id}/pay")
     public ResponseEntity<?> payFine(
             @PathVariable Long id,
-            @RequestParam(required = false) String transactionId
+            @RequestParam(required = false) String paymentMethod,
+            HttpServletRequest request
     ) throws Exception {
-        PaymentInitiateResponse res = fineService.payFine(id, transactionId);
+        PaymentInitiateResponse res = fineService.payFine(id, paymentMethod, request.getRemoteAddr());
         return ResponseEntity.ok(res);
     }
 

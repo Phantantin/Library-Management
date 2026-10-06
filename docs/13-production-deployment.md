@@ -9,7 +9,7 @@ Do not use `Sass-Pos-Application` as a root directory. It belongs to a different
 
 ## 1. Preflight
 
-Both `.gitignore` files exclude `.env`, `.env.local` and local Spring properties. Never copy real Aiven, Razorpay, SMTP or UploadThing values into Git. The backend deployment files are `Dockerfile`, `.dockerignore`, `render.yaml` and `src/main/resources/db/migration/V1__initial_schema.sql`.
+Both `.gitignore` files exclude `.env`, `.env.local` and local Spring properties. Never copy real Aiven, VNPAY, SMTP or UploadThing values into Git. The backend deployment files are `Dockerfile`, `.dockerignore`, `render.yaml` and `src/main/resources/db/migration/`.
 
 Run before pushing:
 
@@ -70,7 +70,9 @@ Required environment variables:
 | `PAYMENT_CURRENCY` | `VND` |
 | `ADMIN_EMAIL` | Optional bootstrap admin email |
 | `ADMIN_PASSWORD` | Optional bootstrap password, at least 12 characters |
-| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | Required in Render before members can subscribe to paid plans or pay fines. Use Razorpay test keys for sandbox testing; keep both values only in Render secrets. |
+| `VNPAY_TMN_CODE` / `VNPAY_HASH_SECRET` | Required in Render. Keep the merchant ID and signing key only in Render secrets; never commit them. |
+| `VNPAY_PAYMENT_URL` | `https://sandbox.vnpayment.vn/paymentv2/vpcpay.html` for Sandbox testing. |
+| `BACKEND_PUBLIC_URL` | Exact public HTTPS Render origin, with no trailing slash; VNPAY uses it for Return and IPN URLs. |
 | `SPRING_MAIL_USERNAME` / `SPRING_MAIL_PASSWORD` | Optional until reset email is tested |
 | `SPRING_MAIL_PORT` | Provider port; Render Free blocks 25/465/587 |
 
@@ -112,7 +114,7 @@ Do not add a trailing slash. Redeploy Render. Preview deployments have changing 
 4. Sign in with the bootstrap admin, create a genre and upload/create a book.
 5. Verify search, book details and the uploaded cover.
 6. Test checkout only after creating/activating an appropriate subscription.
-7. Add `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` to Render, use sandbox credentials first, and confirm the backend verification result. Without these keys, paid membership signup and fine payment return HTTP 503 and remain unavailable.
+7. Set the VNPAY Sandbox variables in Render, set `BACKEND_PUBLIC_URL` to the exact Render service origin, and give VNPAY this IPN URL: `https://YOUR-SERVICE.onrender.com/api/payments/vnpay/ipn`. Complete a low-value Sandbox payment and confirm the backend payment record becomes `SUCCESS` only after IPN.
 8. Test forgot-password only after configuring an email route available from Render.
 
 ## 7. Free-tier behavior

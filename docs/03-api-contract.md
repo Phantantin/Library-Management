@@ -22,7 +22,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `BookDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -38,7 +38,7 @@ Request (exact Spring binding, including query defaults):
 @RequestBody BookSearchRequest request
 ```
 
-Response: `PageResponse<BookDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<BookDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -54,7 +54,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody BookDTO bookDTO
 ```
 
-Response: `BookDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -72,7 +72,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `List<GenreDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<GenreDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -90,7 +90,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody UserDTO req
 ```
 
-Response: `AuthResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `AuthResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -106,7 +106,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody LoginRequest req
 ```
 
-Response: `AuthResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `AuthResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -122,7 +122,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody ForgotPasswordRequest request
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -138,7 +138,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody ResetPasswordRequest request
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -156,7 +156,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody BookDTO bookDTO
 ```
 
-Response: `BookDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -172,7 +172,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody List<BookDTO> bookDTOs
 ```
 
-Response: `List<BookDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<BookDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -188,7 +188,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `BookDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -205,7 +205,7 @@ Request (exact Spring binding, including query defaults):
             @Valid @RequestBody BookDTO bookDTO
 ```
 
-Response: `BookDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -221,7 +221,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -237,7 +237,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -258,7 +258,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "DESC") String sortDirection
 ```
 
-Response: `PageResponse<BookDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<BookDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -274,7 +274,7 @@ Request (exact Spring binding, including query defaults):
 @RequestBody BookSearchRequest bookSearchRequest
 ```
 
-Response: `PageResponse<BookDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<BookDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -290,7 +290,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `BookStatsResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookStatsResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -306,7 +306,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue = "6") int limit
 ```
 
-Response: `List<BookDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<BookDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -322,7 +322,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue = "6") int limit
 ```
 
-Response: `List<BookDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<BookDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -340,7 +340,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody CheckoutRequest checkoutRequest
 ```
 
-Response: `BookLoanDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookLoanDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -357,7 +357,7 @@ Request (exact Spring binding, including query defaults):
             @Valid @RequestBody CheckoutRequest checkoutRequest
 ```
 
-Response: `BookLoanDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookLoanDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -373,7 +373,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody CheckinRequest checkinRequest
 ```
 
-Response: `BookLoanDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookLoanDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -389,7 +389,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody RenewalRequest  renewalRequest
 ```
 
-Response: `BookLoanDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookLoanDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -407,7 +407,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "20") int size
 ```
 
-Response: `PageResponse<BookLoanDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<BookLoanDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -423,7 +423,7 @@ Request (exact Spring binding, including query defaults):
 @RequestBody BookLoanSearchRequest bookLoanSearchRequest
 ```
 
-Response: `PageResponse<BookLoanDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<BookLoanDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -439,7 +439,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -457,7 +457,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody CreateReviewRequest request
 ```
 
-Response: `BookReviewDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookReviewDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -474,7 +474,7 @@ Request (exact Spring binding, including query defaults):
             @Valid @RequestBody UpdateReviewRequest request
 ```
 
-Response: `BookReviewDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `BookReviewDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -490,7 +490,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long reviewId
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -508,7 +508,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "10") int size
 ```
 
-Response: `PageResponse<BookReviewDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<BookReviewDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -526,7 +526,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody CreateFineRequest fineRequest
 ```
 
-Response: `FineDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `FineDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -540,10 +540,11 @@ Request (exact Spring binding, including query defaults):
 
 ```java
 @PathVariable Long id,
-            @RequestParam(required = false) String transactionId
+            @RequestParam(required = false) String paymentMethod,
+            HttpServletRequest request
 ```
 
-Response: `PaymentInitiateResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PaymentInitiateResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -559,7 +560,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody WaiveFineRequest waiveFineRequest
 ```
 
-Response: `FineDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `FineDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -576,7 +577,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(required = false) FineType type
 ```
 
-Response: `List<FineDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<FineDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -596,7 +597,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "20") int size
 ```
 
-Response: `PageResponse<FineDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<FineDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -614,7 +615,7 @@ Request (exact Spring binding, including query defaults):
 @RequestBody GenreDTO genreSTO
 ```
 
-Response: `GenreDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `GenreDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -630,7 +631,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `List<GenreDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<GenreDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -646,7 +647,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable("genreId") Long genreId
 ```
 
-Response: `GenreDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `GenreDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -663,7 +664,7 @@ Request (exact Spring binding, including query defaults):
             @RequestBody GenreDTO genre
 ```
 
-Response: `GenreDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `GenreDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -679,7 +680,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable("genreId") Long genreId
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -695,7 +696,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable("genreId") Long genreId
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -711,7 +712,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `List<GenreDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<GenreDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -727,7 +728,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `Long` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Long` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -743,7 +744,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue = "6") int limit
 ```
 
-Response: `List<GenreDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<GenreDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -759,7 +760,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `Long` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Long` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -777,30 +778,77 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `String` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `String` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
 Frontend usage: home. Error cases: validation, resource existence, role/ownership and domain preconditions described in the system overview.
 
-## PaymentController
+### GET /health
 
-### POST /api/payments/verify
-
-Source: `PaymentController.java::verifyPayment`.
+Source: `HomeController.java::health`.
 
 Request (exact Spring binding, including query defaults):
 
 ```java
-@Valid
-            @RequestBody PaymentVerifyRequest request
+// no parameters
 ```
 
-Response: `PaymentDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Map<String, Object>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
-Frontend usage: verifyPayment. Error cases: validation, resource existence, role/ownership and domain preconditions described in the system overview.
+Frontend usage: health. Error cases: validation, resource existence, role/ownership and domain preconditions described in the system overview.
+
+## PaymentController
+
+### GET /api/payments/vnpay/return
+
+Source: `PaymentController.java::vnpayReturn`.
+
+Request (exact Spring binding, including query defaults):
+
+```java
+@RequestParam Map<String, String> params
+```
+
+Response: `303 redirect to the configured frontend payment result page` (schema below). Success: HTTP 303 redirect.
+
+Authentication / Role: Public; no JWT.
+
+Frontend usage: vnpayReturn. Error cases: validation, resource existence, role/ownership and domain preconditions described in the system overview.
+
+### GET /api/payments/vnpay/ipn
+
+Source: `PaymentController.java::vnpayIpn`.
+
+Request (exact Spring binding, including query defaults):
+
+```java
+@RequestParam Map<String, String> params
+```
+
+Response: `JSON object {"RspCode":"00","Message":"Confirm Success"} on acknowledged callbacks` (schema below). Success: HTTP 200 with the VNPAY RspCode acknowledgement.
+
+Authentication / Role: Public; no JWT.
+
+Frontend usage: vnpayIpn. Error cases: validation, resource existence, role/ownership and domain preconditions described in the system overview.
+
+### GET /api/payments/{paymentId}
+
+Source: `PaymentController.java::getPayment`.
+
+Request (exact Spring binding, including query defaults):
+
+```java
+@PathVariable Long paymentId
+```
+
+Response: `PaymentDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
+
+Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
+
+Frontend usage: getPayment. Error cases: validation, resource existence, role/ownership and domain preconditions described in the system overview.
 
 ### GET /api/payments
 
@@ -815,7 +863,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "DESC") String sortDir
 ```
 
-Response: `Page<PaymentDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Page<PaymentDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -833,7 +881,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="20") int size
 ```
 
-Response: `Page<BookReviewDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Page<BookReviewDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -849,7 +897,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="20") int size
 ```
 
-Response: `Page<BookReviewDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Page<BookReviewDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -865,7 +913,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="20") int size
 ```
 
-Response: `Page<PaymentDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Page<PaymentDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -881,7 +929,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="20") int size
 ```
 
-Response: `Page<SubscriptionDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Page<SubscriptionDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -897,7 +945,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue="") String search,@RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="20") int size
 ```
 
-Response: `Page<UserDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Page<UserDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -913,7 +961,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `UserDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `UserDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -929,7 +977,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody ProfileRequest request
 ```
 
-Response: `UserDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `UserDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -945,7 +993,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `Map<String,Object>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `Map<String,Object>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -963,7 +1011,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody ReservationRequest reservationRequest
 ```
 
-Response: `ReservationDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ReservationDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -980,7 +1028,7 @@ Request (exact Spring binding, including query defaults):
             @Valid @RequestBody ReservationRequest reservationRequest
 ```
 
-Response: `ReservationDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ReservationDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -996,7 +1044,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `ReservationDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ReservationDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1012,7 +1060,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long id
 ```
 
-Response: `ReservationDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ReservationDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1033,7 +1081,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "DESC") String sortDirection
 ```
 
-Response: `PageResponse<ReservationDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<ReservationDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1056,7 +1104,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "DESC") String sortDirection
 ```
 
-Response: `PageResponse<ReservationDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<ReservationDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1071,10 +1119,11 @@ Source: `SubscriptionController.java::subscribeToSubscription`.
 Request (exact Spring binding, including query defaults):
 
 ```java
-@RequestBody SubscriptionDTO subscription
+@Valid @RequestBody SubscriptionPurchaseRequest purchase,
+            HttpServletRequest request
 ```
 
-Response: `PaymentInitiateResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PaymentInitiateResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1090,7 +1139,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(required = false) Long userId
 ```
 
-Response: `SubscriptionDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `SubscriptionDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1106,7 +1155,7 @@ Request (exact Spring binding, including query defaults):
 @RequestParam(defaultValue="0") int page, @RequestParam(defaultValue="20") int size
 ```
 
-Response: `List<SubscriptionDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<SubscriptionDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1122,7 +1171,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1138,7 +1187,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `?` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `?` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1155,7 +1204,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(required = false) String reason
 ```
 
-Response: `SubscriptionDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `SubscriptionDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1172,7 +1221,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam Long paymentId
 ```
 
-Response: `SubscriptionDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `SubscriptionDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1190,7 +1239,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `List<SubscriptionPlanDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<SubscriptionPlanDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Public; no JWT.
 
@@ -1206,7 +1255,7 @@ Request (exact Spring binding, including query defaults):
 @Valid @RequestBody SubscriptionPlanDTO subscriptionPlanDTO
 ```
 
-Response: `SubscriptionPlanDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `SubscriptionPlanDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1223,7 +1272,7 @@ Request (exact Spring binding, including query defaults):
             @PathVariable long id
 ```
 
-Response: `SubscriptionPlanDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `SubscriptionPlanDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1239,7 +1288,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable long id
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1257,7 +1306,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `List<UserDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `List<UserDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; ROLE_ADMIN.
 
@@ -1273,7 +1322,7 @@ Request (exact Spring binding, including query defaults):
 // no parameters
 ```
 
-Response: `UserDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `UserDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1292,7 +1341,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(required = false) String notes
 ```
 
-Response: `WishlistDTO` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `WishlistDTO` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1308,7 +1357,7 @@ Request (exact Spring binding, including query defaults):
 @PathVariable Long bookId
 ```
 
-Response: `ApiResponse` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `ApiResponse` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1325,7 +1374,7 @@ Request (exact Spring binding, including query defaults):
             @RequestParam(defaultValue = "10") int size
 ```
 
-Response: `PageResponse<WishlistDTO>` (schema below). Success is normally 200; loan checkout/checkin and on-behalf reservation return 201.
+Response: `PageResponse<WishlistDTO>` (schema below). Success: normally HTTP 200; some create actions return 201.
 
 Authentication / Role: Bearer JWT; authenticated ROLE_USER or ROLE_ADMIN. Owner checks apply to personal records.
 
@@ -1445,14 +1494,8 @@ private Long subscriptionId;
 private String successUrl;
 @Size(max = 500, message = "Cancel URL must not exceed 500 characters")
 private String cancelUrl;
-```
-
-### PaymentVerifyRequest
-
-```java
-private String razorpayPaymentId;
-private String stripePaymentIntentId;
-private String stripePaymentIntentStatus;
+private String paymentMethod;
+private String ipAddress;
 ```
 
 ### ProfileRequest
@@ -1493,6 +1536,15 @@ private Boolean activeOnly;
 ```java
 private String token;
 private String password;
+```
+
+### SubscriptionPurchaseRequest
+
+```java
+@NotNull
+@Positive
+private Long planId;
+private String paymentMethod;
 ```
 
 ### UpdateReviewRequest
@@ -1553,19 +1605,12 @@ private boolean empty;
 private Long paymentId;
 private PaymentGateway gateway;
 private String transactionId;
-private String razorpayOrderId;
+private String gatewayOrderId;
 private Long amount;
 private String description;
 private String checkoutUrl;
 private String message;
 private Boolean success;
-```
-
-### PaymentLinkResponse
-
-```java
-private String payment_link_url;
-private String payment_link_id;
 ```
 
 ### BookDTO
@@ -1937,7 +1982,8 @@ public enum FineType {
 ```java
 public enum PaymentGateway {
     RAZORPAY,
-    STRIPE
+    STRIPE,
+    VNPAY
 }
 ```
 
@@ -1998,4 +2044,6 @@ public enum UserRole {
 
 `Page<PaymentDTO>` uses Spring Page fields `content`, `number`, `size`, `totalElements`, `totalPages`, `first`, `last`, `empty`, `sort`, `pageable`, `numberOfElements`.
 
-Endpoint count: 78.
+VNPAY checkout requests use VND and store the local payment ID as `vnp_TxnRef`. `paymentMethod=QR` selects `vnp_BankCode=VNPAYQR`; `ALL` lets the hosted VNPAY page offer its available methods. The Return endpoint validates the signed response and redirects for display only. Only the unauthenticated, signature-verified IPN endpoint changes payment/fine/subscription state. Configure its public HTTPS URL with the merchant: `/api/payments/vnpay/ipn`.
+
+Endpoint count: 81.

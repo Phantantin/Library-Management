@@ -14,7 +14,7 @@ public interface FineService {
 
     FineDTO createFine(CreateFineRequest createFineRequest) throws Exception;
 
-    PaymentInitiateResponse payFine(Long fineId, String transactionId) throws Exception;
+    PaymentInitiateResponse payFine(Long fineId, String paymentMethod, String clientIp) throws Exception;
 
     void markFineAsPaid(Long fineId, Long amount, String transactionId) throws Exception;
 
