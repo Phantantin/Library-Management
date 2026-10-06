@@ -21,6 +21,9 @@ public class SecurityConfig {
         return http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(a -> a
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // VNPAY calls IPN server-to-server and redirects the payer to Return.
+                // Both endpoints verify VNPAY's HMAC before using callback data.
+                .requestMatchers(HttpMethod.GET, "/api/payments/vnpay/ipn", "/api/payments/vnpay/return").permitAll()
                 .requestMatchers("/api/admin/**", "/api/subscription-plans/admin/**", "/api/subscriptions/admin/**", "/api/book-loans/admin/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/books/**", "/api/genres/**", "/api/subscription-plans", "/api/reviews/book/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/books/search").permitAll()

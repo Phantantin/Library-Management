@@ -9,6 +9,7 @@ import com.zou.modal.SubscriptionPlan;
 import com.zou.modal.User;
 import com.zou.payload.dto.SubscriptionDTO;
 import com.zou.payload.request.PaymentInitiateRequest;
+import com.zou.payload.request.SubscriptionPurchaseRequest;
 import com.zou.payload.response.PaymentInitiateResponse;
 import com.zou.repository.SubscriptionPlanRepository;
 import com.zou.repository.SubscriptionRepository;
@@ -38,18 +39,26 @@ public class SubscriptionImpl implements SubscriptionService {
     private final com.zou.service.AccessService access;
 
     @Override
-    public PaymentInitiateResponse subscribe(SubscriptionDTO subscriptionDTO) throws Exception {
+    public PaymentInitiateResponse subscribe(SubscriptionPurchaseRequest purchase, String clientIp) throws Exception {
         User user = userService.getCurrentUser();
 
         SubscriptionPlan plan = subscriptionPlanRepository
-                .findById(subscriptionDTO.getPlanId()).orElseThrow(
+                .findById(purchase.getPlanId()).orElseThrow(
                         () -> new  Exception("Plan not found!")
                 );
 
         if(!Boolean.TRUE.equals(plan.getIsActive())) throw new Exception("Plan is inactive");
+        if (!"VND".equalsIgnoreCase(plan.getCurrency())) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST,
+                    "VNPAY can only accept subscription plans priced in VND."
+            );
+        }
         // Optional<Sub>
 
-        Subscription subscription = subscriptionMapper.toEntity(subscriptionDTO, plan, user);
+        SubscriptionDTO draft = new SubscriptionDTO();
+        draft.setPlanId(plan.getId());
+        Subscription subscription = subscriptionMapper.toEntity(draft, plan, user);
         subscription.initializeFromPlan();
         subscription.setIsActive(false);
         Subscription savedSubscription = subscriptionRepository.save(subscription);
@@ -60,9 +69,11 @@ public class SubscriptionImpl implements SubscriptionService {
                 .userId(user.getId())
                 .subscriptionId(savedSubscription.getId())
                 .paymentType(PaymentType.MEMBERSHIP)
-                .gateway(PaymentGateway.RAZORPAY)
+                .gateway(PaymentGateway.VNPAY)
                 .amount(savedSubscription.getPrice())
                 .description("library Subscription - " + plan.getName())
+                .paymentMethod(purchase.getPaymentMethod())
+                .ipAddress(clientIp)
                 .build();
 
         return paymentService.initiatePayment(paymentInitiateRequest);

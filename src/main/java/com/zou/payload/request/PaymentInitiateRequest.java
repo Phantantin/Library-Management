@@ -43,4 +43,8 @@ public class PaymentInitiateRequest {
     // URL chuyển hướng khi hủy thanh toán
     @Size(max = 500, message = "Cancel URL must not exceed 500 characters")
     private String cancelUrl;
+
+    private String paymentMethod;
+
+    private String ipAddress;
 }

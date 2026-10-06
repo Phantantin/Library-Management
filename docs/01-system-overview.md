@@ -1,6 +1,6 @@
 # Repository analysis — baseline
 
-Spring Boot 4.0.4, Java 17, Spring MVC, Security, JPA/Hibernate, MySQL, Lombok, JJWT, SMTP and Razorpay. The new Next.js frontend is in the workspace-level `frontend/` directory, alongside the backend. Backend Git root is Library-Management. Branch: feature/library-frontend.
+Spring Boot 4.0.4, Java 17, Spring MVC, Security, JPA/Hibernate, MySQL, Lombok, JJWT, SMTP and VNPAY Sandbox. The Next.js frontend is in the workspace-level `frontend/` directory, alongside the backend. Backend Git root is Library-Management.
 
 ## Inventory
 
@@ -16,8 +16,8 @@ Spring Boot 4.0.4, Java 17, Spring MVC, Security, JPA/Hibernate, MySQL, Lombok, 
 - Reservation accepts unavailable books, rejects duplicate active reservation and active checkout; queue position, cancel and staff fulfillment. Intended limit five. Fulfillment must atomically checkout for the reserved member.
 - Wishlist is per-user, unique by book; paginated list, add, remove.
 - Fines are staff-created against a loan: overdue/damage/loss/processing; pay or waive. Existing model has no partial-payment accounting despite PARTIALLY_PAID enum and unused DTO fields.
-- Subscription snapshots plan price and borrowing limits, starts inactive, creates Razorpay payment link. Verified captured payment activates membership through event listener. Cancel and expiry deactivate. Plans support create/update/delete.
-- Payment uses hosted Razorpay links and backend fetch of provider payment. STRIPE enum exists but no implementation. Local code uses VND while plan default is INR: currency handling requires a controlled fix and gateway validation.
+- Subscription snapshots plan price and borrowing limits, starts inactive, and creates a VNPAY hosted checkout. Only a valid IPN activates the membership through the payment event listener. Cancel and expiry deactivate. Plans support create/update/delete.
+- Payment uses VNPAY hosted checkout. The IPN verifies HMAC-SHA512, merchant code, local order reference, exact VND amount and provider success codes; browser Return never updates payment status. Legacy RAZORPAY/STRIPE enum values remain for old records, with no active implementation.
 
 ## Baseline defects and resolution
 
@@ -36,4 +36,4 @@ These findings were recorded before frontend implementation. Items 1-10 were cor
 
 ## Analysis boundary
 
-The inventory and defects above describe the source baseline used to design the integration. The implemented result and remaining environment-dependent checks are recorded in `IMPLEMENTATION-REPORT.md`. External SMTP/Razorpay availability, production MySQL contents and deployed browser flows require the target environment and valid sandbox credentials.
+The inventory and defects above describe the source baseline used to design the integration. The implemented result and remaining environment-dependent checks are recorded in `IMPLEMENTATION-REPORT.md`. External SMTP/VNPAY availability, production MySQL contents and deployed browser flows require the target environment and registered Sandbox callback.
