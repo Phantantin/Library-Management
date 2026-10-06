@@ -32,6 +32,8 @@ public class UserDTO {
 
     private UserRole role;
 
+    @jakarta.validation.constraints.NotBlank
+    @jakarta.validation.constraints.Size(max=30)
     private String phone;
 
     @jakarta.validation.constraints.NotBlank

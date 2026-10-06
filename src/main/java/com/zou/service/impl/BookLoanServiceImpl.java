@@ -8,7 +8,6 @@ import com.zou.modal.Book;
 import com.zou.modal.BookLoan;
 import com.zou.modal.User;
 import com.zou.payload.dto.BookLoanDTO;
-import com.zou.payload.dto.SubscriptionDTO;
 import com.zou.payload.request.BookLoanSearchRequest;
 import com.zou.payload.request.CheckinRequest;
 import com.zou.payload.request.CheckoutRequest;
@@ -17,9 +16,9 @@ import com.zou.payload.response.PageResponse;
 import com.zou.repository.BookLoanRepository;
 import com.zou.repository.BookRepository;
 import com.zou.service.BookLoanService;
-import com.zou.service.SubscriptionService;
 import com.zou.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,11 +37,19 @@ import java.util.stream.Collectors;
 public class BookLoanServiceImpl implements BookLoanService {
     private final BookLoanRepository bookLoanRepository;
     private final UserService userService;
-    private final SubscriptionService subscriptionService;
     private final BookRepository bookRepository;
     private final BookLoanMapper bookLoanMapper;
     private final com.zou.service.AccessService access;
     private final com.zou.service.ReservationQueueService reservationQueue;
+
+    @Value("${app.loan.max-active-loans:5}")
+    private int maxActiveLoans;
+
+    @Value("${app.loan.max-checkout-days:30}")
+    private int maxCheckoutDays;
+
+    @Value("${app.loan.max-renewal-days:14}")
+    private int maxRenewalDays;
 
     @Override
     public BookLoanDTO checkoutBook(CheckoutRequest checkoutRequest) throws Exception {
@@ -56,13 +63,19 @@ public class BookLoanServiceImpl implements BookLoanService {
         access.ownerOrAdmin(userId);
         // 1. validate user exit
         User user = userService.findById(userId);
-        // 2. validate user has active subscription
-        SubscriptionDTO subscription = subscriptionService
-                .getUsersActiveSubscriptions(user.getId());
-        //3.validate book exits and is available
+        if (!org.springframework.util.StringUtils.hasText(user.getFullName())
+                || !org.springframework.util.StringUtils.hasText(user.getEmail())
+                || !org.springframework.util.StringUtils.hasText(user.getPhone())) {
+            throw new BookException("Complete your profile before borrowing by adding your full name and phone number.");
+        }
+        // 2. validate book exists and is available
         Book book = bookRepository.findLockedById(checkoutRequest.getBookId())
                 .orElseThrow(()-> new BookException("Book not found"));
-        if(checkoutRequest.getCheckoutDays()==null || checkoutRequest.getCheckoutDays()<1 || checkoutRequest.getCheckoutDays()>subscription.getMaxDaysPerBook()) throw new BookException("Checkout days exceed membership allowance");
+        if (checkoutRequest.getCheckoutDays() == null
+                || checkoutRequest.getCheckoutDays() < 1
+                || checkoutRequest.getCheckoutDays() > maxCheckoutDays) {
+            throw new BookException("Checkout days must be between 1 and " + maxCheckoutDays + " days.");
+        }
 
 
         if(!book.getActive()){
@@ -78,9 +91,8 @@ public class BookLoanServiceImpl implements BookLoanService {
         }
         // 5. check user's active checkout limit
         long activeCheckouts=bookLoanRepository.countActiveBookLoansByUser(userId);
-        int maxBooksAllowed = subscription.getMaxBooksAllowed();
 
-        if(activeCheckouts>=maxBooksAllowed){
+        if(activeCheckouts>=maxActiveLoans){
             throw new  BookException("You have reached the maximum number of books allowed.");
         }
         // 6. Check for overdue books
@@ -163,8 +175,11 @@ public class BookLoanServiceImpl implements BookLoanService {
 
 
         access.ownerOrAdmin(bookLoan.getUser().getId());
-        var subscription = subscriptionService.getUsersActiveSubscriptions(bookLoan.getUser().getId());
-        if(renewalRequest.getExtensionDays()==null || renewalRequest.getExtensionDays()<1 || renewalRequest.getExtensionDays()>subscription.getMaxDaysPerBook()) throw new BookException("Invalid renewal duration");
+        if (renewalRequest.getExtensionDays() == null
+                || renewalRequest.getExtensionDays() < 1
+                || renewalRequest.getExtensionDays() > maxRenewalDays) {
+            throw new BookException("Renewal extension must be between 1 and " + maxRenewalDays + " days.");
+        }
         if(bookLoan.getDueDate().isBefore(LocalDate.now())) throw new BookException("Overdue loans cannot be renewed");
         // 2 check if can be renewed
         if(!bookLoan.canRenew()){

@@ -14,6 +14,7 @@ public class RenewalRequest {
     @NotNull(message = "Book loan ID is mandatory")
     private Long bookLoanId;
 
+    @NotNull(message = "Extension days are mandatory")
     @Min(value = 1, message = "Extension days must be at least 1")
     private Integer extensionDays;
 

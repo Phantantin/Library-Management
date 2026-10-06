@@ -63,7 +63,7 @@ class AuthControllerIntegrationTest {
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"fullName":"Registration Test","email":"%s","password":"%s"}
+                                {"fullName":"Registration Test","email":"%s","phone":"0123456789","password":"%s"}
                                 """.formatted(EMAIL, PASSWORD)))
                 .andExpect(status().isOk());
 
@@ -85,6 +85,17 @@ class AuthControllerIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(false))
                 .andExpect(jsonPath("$.message").isNotEmpty());
+    }
+
+    @Test
+    void signupRequiresAContactPhoneForBorrowingEligibility() throws Exception {
+        mockMvc.perform(post("/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"fullName":"Registration Test","email":"%s","password":"%s"}
+                                """.formatted(EMAIL, PASSWORD)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(org.hamcrest.Matchers.containsString("phone")));
     }
 
     @Test
